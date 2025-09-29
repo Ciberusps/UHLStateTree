@@ -97,8 +97,8 @@ struct UHLSTATETREE_API FUHLSTTask_PlayAnimMontage : public FStateTreeTaskCommon
 
 #if WITH_EDITOR
 	virtual FText GetDescription(const FGuid& ID, FStateTreeDataView InstanceDataView, const IStateTreeBindingLookup& BindingLookup, EStateTreeNodeFormatting Formatting = EStateTreeNodeFormatting::Text) const override;
-	virtual FName GetIconName() const override { return FName("Icons.Play"); }
-	virtual FColor GetIconColor() const override { return UE::StateTree::Colors::Grey; }
+	virtual FName GetIconName() const override { return FName("StateTreeEditorStyle|Node.Animation"); }
+	virtual FColor GetIconColor() const override { return FColor(92, 0, 148); }
 #endif
 
 private:

@@ -55,7 +55,7 @@ struct UHLSTATETREE_API FUHLSTTask_GameplayFocus : public FStateTreeTaskCommonBa
 	
 #if WITH_EDITOR
 	virtual FText GetDescription(const FGuid& ID, FStateTreeDataView InstanceDataView, const IStateTreeBindingLookup& BindingLookup, EStateTreeNodeFormatting Formatting = EStateTreeNodeFormatting::Text) const override;
-	virtual FName GetIconName() const override;
-	virtual FColor GetIconColor() const override;
+	virtual FName GetIconName() const override { return FName("StateTreeEditorStyle|Node.Find"); }
+	virtual FColor GetIconColor() const override { return UE::StateTree::Colors::DarkRed; }
 #endif
 };

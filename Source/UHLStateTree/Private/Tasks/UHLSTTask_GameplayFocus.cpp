@@ -150,16 +150,6 @@ FText FUHLSTTask_GameplayFocus::GetDescription(const FGuid& ID, FStateTreeDataVi
 
 	return FText::FromString(FString::Printf(TEXT(">%s"), *Description));
 }
-
-FName FUHLSTTask_GameplayFocus::GetIconName() const
-{
-	return FName("BTEditor.Graph.BTNode.Service.DefaultFocus.Icon");
-}
-
-FColor FUHLSTTask_GameplayFocus::GetIconColor() const
-{
-	return UE::StateTree::Colors::Grey;
-}
 #endif
 
 #undef LOCTEXT_NAMESPACE
