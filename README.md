@@ -17,7 +17,7 @@ Support: `UE5.5 (main)`
 
 ```bash
 // install as git submodule to your plugins folder
-git submodule add https://github.com/Ciberusps/uhl-state-tree.git ./Plugins/UHLStateTree
+git submodule add https://github.com/Ciberusps/UHLStateTree.git ./Plugins/UHLStateTree
 
 // to update plugin
 git submodule update --remote`
