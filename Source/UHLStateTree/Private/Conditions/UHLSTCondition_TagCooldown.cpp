@@ -46,3 +46,5 @@ FText FUHLSTCondition_TagCooldown::GetDescription(const FGuid& ID, FStateTreeDat
 		TEXT("NO "), FText::FromString(InstanceData->bInverse ? "" : "NO "));
 }
 #endif
+
+#undef LOCTEXT_NAMESPACE

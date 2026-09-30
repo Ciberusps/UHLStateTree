@@ -242,3 +242,4 @@ FText FUHLSTCondition_InRange::GetDescription(const FGuid& ID, FStateTreeDataVie
 #endif
 
 
+#undef LOCTEXT_NAMESPACE

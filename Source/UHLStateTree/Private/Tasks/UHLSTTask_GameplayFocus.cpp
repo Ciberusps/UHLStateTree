@@ -44,11 +44,18 @@ EStateTreeRunStatus FUHLSTTask_GameplayFocus::Tick(
 
 	if (InstanceData.ActorToFocus)
 	{
-		InstanceData.AIController->SetFocus(InstanceData.ActorToFocus, static_cast<uint8>(InstanceData.FocusPriority));	
+		InstanceData.AIController->SetFocus(InstanceData.ActorToFocus, static_cast<uint8>(InstanceData.FocusPriority));
+	}
+	else if (FAISystem::IsValidLocation(InstanceData.LocationToFocus)
+		&& !InstanceData.LocationToFocus.IsNearlyZero())
+	{
+		InstanceData.AIController->SetFocalPoint(InstanceData.LocationToFocus, static_cast<uint8>(InstanceData.FocusPriority));
 	}
 	else
 	{
-		InstanceData.AIController->SetFocalPoint(InstanceData.LocationToFocus, static_cast<uint8>(InstanceData.FocusPriority));	
+		// no actor and no meaningful location (a lost/unbound target leaves LocationToFocus at 0,0,0):
+		// focusing the world origin would turn the pawn, so drop the focus instead
+		InstanceData.AIController->ClearFocus(static_cast<uint8>(InstanceData.FocusPriority));
 	}
 	
 	return FStateTreeTaskCommonBase::Tick(Context, DeltaTime);

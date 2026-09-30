@@ -59,9 +59,9 @@ bool FUHLSTCondition_InAngle::TestCondition(FStateTreeExecutionContext& Context)
 	const FRotator SelfRotation = InstanceData.Character->GetActorRotation();
 
 	FVector TargetLocation = InstanceData.Location;
-	if (IsValid(InstanceData.OtherCharacter))
+	if (IsValid(InstanceData.OtherActor))
 	{
-		TargetLocation = InstanceData.OtherCharacter->GetActorLocation();
+		TargetLocation = InstanceData.OtherActor->GetActorLocation();
 	}
 
 	const float SignedYaw = ComputeSignedYawDegrees(SelfLocation, SelfRotation, TargetLocation);
@@ -136,9 +136,9 @@ FText FUHLSTCondition_InAngle::GetDescription(const FGuid& ID, FStateTreeDataVie
 	const FInstanceDataType* InstanceData = InstanceDataView.GetPtr<FInstanceDataType>();
 	check(InstanceData);
 
-	const FPropertyBindingPath TargetPath(ID, GET_MEMBER_NAME_CHECKED(FUHLSTCondition_InAngleInstanceData, OtherCharacter));
+	const FPropertyBindingPath TargetPath(ID, GET_MEMBER_NAME_CHECKED(FUHLSTCondition_InAngleInstanceData, OtherActor));
 	const bool bIsOtherCharacterBound = !BindingLookup.GetBindingSourceDisplayName(TargetPath).IsEmpty();
-	const bool bHasTargetCharacter = InstanceData->OtherCharacter != nullptr || bIsOtherCharacterBound;
+	const bool bHasTargetCharacter = InstanceData->OtherActor != nullptr || bIsOtherCharacterBound;
 
 	FText Prefix;
 	if (bHasTargetCharacter)
@@ -171,3 +171,4 @@ FText FUHLSTCondition_InAngle::GetDescription(const FGuid& ID, FStateTreeDataVie
 
 
 
+#undef LOCTEXT_NAMESPACE

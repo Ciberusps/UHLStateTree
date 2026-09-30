@@ -44,6 +44,13 @@ struct UHLSTATETREE_API FUHLSTTask_TurnToInstanceData
 
     UPROPERTY(EditAnywhere, Category="Parameter")
     bool bDebug = false;
+	
+	// Anti-overshoot hysteresis: if a turn animation overshoots the goal and the
+	// next required turn would reverse direction while the remaining angle is within
+	// this tolerance, accept the current heading as "reached" instead of playing an
+	// opposite turn (prevents the +-15deg ping-pong near the goal). 0 = disabled.
+	UPROPERTY(EditAnywhere, Category="Parameter", meta = (ClampMin = "0.0", Units="Degrees"))
+	float OvershootTolerance = 15.0f;
 
 	// TODO don't woks for now
 	UPROPERTY()
@@ -62,6 +69,23 @@ struct UHLSTATETREE_API FUHLSTTask_TurnToInstanceData
 	FTurnSettings CurrentTurnSettings;
 	UPROPERTY(Transient)
 	FTurnRange CurrentTurnRange;
+
+	// --- anti-overshoot hysteresis state ---
+	// sign (+1 / -1) of the last turn animation that was actually started; 0 = none yet
+	UPROPERTY(Transient)
+	int32 LastTurnSign = 0;
+
+	// --- best-single-montage state ---
+	// true after we committed to & started the single best montage for the whole turn;
+	// prevents chaining another (smaller) montage on later ticks while it plays / warps.
+	UPROPERTY(Transient)
+	bool bBestSingleMontagePlayed = false;
+
+	// --- restore CMC desired-rotation after anim-only turn ---
+	UPROPERTY(Transient)
+	bool bDesiredRotationDisabled = false;
+	UPROPERTY(Transient)
+	bool bCachedUseControllerDesiredRotation = false;
 
 	// /** Optional actor where to draw the text at. */
 	// UPROPERTY(EditAnywhere, Category = "Input", meta=(Optional))
@@ -84,6 +108,7 @@ struct UHLSTATETREE_API FUHLSTTask_TurnTo : public FStateTreeTaskCommonBase
 
 	virtual EStateTreeRunStatus EnterState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const override;
 	virtual EStateTreeRunStatus Tick(FStateTreeExecutionContext& Context, const float DeltaTime) const override;
+	virtual void ExitState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const override;
 #if WITH_EDITOR
 	virtual FText GetDescription(const FGuid& ID, FStateTreeDataView InstanceDataView, const IStateTreeBindingLookup& BindingLookup, EStateTreeNodeFormatting Formatting = EStateTreeNodeFormatting::Text) const override;
 	virtual FName GetIconName() const override
@@ -98,4 +123,6 @@ struct UHLSTATETREE_API FUHLSTTask_TurnTo : public FStateTreeTaskCommonBase
 
 private:
 	FTurnSettings GetTurnSettings(FStateTreeExecutionContext& Context, AActor* Actor) const;
+	// returns true if a turn montage was selected & played this call
+	bool TryPlayTurnAnimation(FStateTreeExecutionContext& Context, ACharacter* AICharacter, float DeltaAngle) const;
 };

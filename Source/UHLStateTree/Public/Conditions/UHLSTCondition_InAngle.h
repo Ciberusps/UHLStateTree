@@ -18,7 +18,7 @@ struct UHLSTATETREE_API FUHLSTCondition_InAngleInstanceData
 
 	// Optional target character. If not valid, Location will be used instead.
 	UPROPERTY(EditAnywhere, Category = "Parameter")
-	TObjectPtr<ACharacter> OtherCharacter = nullptr;
+	TObjectPtr<AActor> OtherActor = nullptr;
 
 	// Fallback location when OtherCharacter is not provided/invalid.
 	UPROPERTY(EditAnywhere, Category = "Parameter")
